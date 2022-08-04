@@ -12,4 +12,5 @@
   -moz-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
   transition: 0.5s linear;
+  position: relative;
 }

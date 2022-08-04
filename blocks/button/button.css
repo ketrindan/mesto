@@ -1,6 +1,7 @@
 .button {
   box-sizing: border-box;
   background-color: #000000;
+  cursor: pointer;
 }
 
 .button:hover {
