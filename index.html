@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Место</title>
+  <link rel="stylesheet" href="./pages/index.css">
+</head>
+<body class="body">
+  <div class="page">
+    <section class="popup">
+      <div class="popup__container">
+        <button class="button popup__close-btn"></button>
+        <div class="input">
+          <h3 class="input__title">Редактировать профиль</h3>
+          <input type="text" placeholder="Кусто" class="input__text input__text_type_name">
+          <input type="text" placeholder="Исследователь" class="input__text input__text_type_info">
+          <button class="button input__submit-btn">Сохранить</button>
+        </div>
+      </div>
+  </section>
+    <header class="header">
+      <img src="./images/logo.svg" class="header__logo" alt="Логотип">
+    </header>
+    <main class="content">
+      <section class="profile">
+        <div class="profile__container">
+          <img src="./images/image-Kusto.png" class="profile__avatar" alt="Аватар">
+          <div class="profile__info-container">
+            <div class="profile__info">
+              <h1 class="profile__title">Жак-Ив Кусто</h1>
+              <button class="button button_action_edit"></button>
+            </div>
+            <p class="profile__subtitle">Исследователь океана</p>
+          </div>
+        </div>
+        <button class="button button_action_add"></button>
+      </section>
+      <section class="elements">
+        <div class="elements__container">
+          <article class="elements__item">
+            <img src="./images/image-karachaevo.png" class="elements__image" alt="картинка Карачево-Черкессия">
+            <div class="elements__info">
+              <h2 class="elements__title">Карачаево-Черкессия</h2>
+              <button class="button elements__like"></button>
+            </div>
+          </article>
+          <article class="elements__item">
+            <img src="./images/image-elbrus.png" class="elements__image" alt="картинка Эльбрус">
+            <div class="elements__info">
+              <h2 class="elements__title">Гора Эльбрус</h2>
+              <button class="button elements__like"></button>
+            </div>
+          </article>
+          <article class="elements__item">
+            <img src="./images/image-dombay.png" class="elements__image" alt="картинка Домбай">
+            <div class="elements__info">
+              <h2 class="elements__title">Домбай</h2>
+              <button class="button elements__like"></button>
+            </div>
+          </article>
+          <article class="elements__item">
+            <img src="./images/image-altay.jpg" class="elements__image" alt="картинка Алтай">
+            <div class="elements__info">
+              <h2 class="elements__title">Алтай</h2>
+              <button class="button elements__like"></button>
+            </div>
+          </article>
+          <article class="elements__item">
+            <img src="./images/image-krasnodar.jpg" class="elements__image" alt="картинка Краснодар">
+            <div class="elements__info">
+              <h2 class="elements__title">Краснодар</h2>
+              <button class="button elements__like"></button>
+            </div>
+          </article>
+          <article class="elements__item">
+            <img src="./images/image-kamchatka.jpg" class="elements__image" alt="картинка Камчатка">
+            <div class="elements__info">
+              <h2 class="elements__title">Камчатка</h2>
+              <button class="button elements__like"></button>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <p class="footer__copyright">&copy; 2022 Mesto Russia</p>
+    </footer>
+  </div>
+  <script src="./script.js"></script>
+</body>
+</html>
