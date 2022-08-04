@@ -1,8 +1,0 @@
-.button {
-  box-sizing: border-box;
-  background-color: #000000;
-}
-
-.button:hover {
-  opacity: 0.6;
-}
