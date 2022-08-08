@@ -5,5 +5,8 @@
   background-size: 100%;
   border-style: none;
   align-self: center;
-  background-color: transparent;
+}
+
+.elements__like:hover {
+  opacity: 0.5;
 }
