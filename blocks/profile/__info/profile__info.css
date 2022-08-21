@@ -6,13 +6,13 @@
 
 @media screen and (max-width: 768px) {
   .profile__info {
-    margin-left: 12%;
+    margin-left: 10%;
+    align-self: center;
   }
 }
 
 @media screen and (max-width: 425px) {
   .profile__info {
     margin-bottom: 14px;
-    margin-left: 16%;
   }
 }
