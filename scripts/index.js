@@ -18,8 +18,8 @@ const linkInput = document.querySelector('.input__text_type_link');
 const elementsPlace = document.querySelector('.elements__title');
 const elementsLink = document.querySelector('.elements__image');
 
-const formProfile = document.querySelector('.input-profile');
-const formElements = document.querySelector('.input-elements');
+const profileForm = document.querySelector('.input-profile');
+const elementForm = document.querySelector('.input-elements');
 
 const imagePopup = document.querySelector('.image-popup');
 const imageLink = imagePopup.querySelector('.popup__image');
@@ -73,20 +73,24 @@ function closePopup(popup) {
 function addElement(name, link) {
   const elementsTemplate = document.querySelector('#elements-template').content;
   const elementsItem = elementsTemplate.querySelector('.elements__item').cloneNode(true);
+  const elementTitle = elementsItem.querySelector('.elements__title');
+  const elementImage = elementsItem.querySelector('.elements__image');
+  const elementLike = elementsItem.querySelector('.elements__like');
+  const elementDeleteButton = elementsItem.querySelector('.elements__delete-btn');
 
-  elementsItem.querySelector('.elements__title').textContent = name;
-  elementsItem.querySelector('.elements__image').src = link;
-  elementsItem.querySelector('.elements__image').alt = `картинка ${name}`;
+  elementTitle.textContent = name;
+  elementImage.src = link;
+  elementImage.alt = `картинка ${name}`;
 
-  elementsItem.querySelector('.elements__like').addEventListener('click', function (evt) {
+  elementLike.addEventListener('click', function (evt) {
     evt.target.classList.toggle('elements__like_active');
 });
 
-elementsItem.querySelector('.elements__close-btn').addEventListener('click', function (evt) {
+  elementDeleteButton.addEventListener('click', function (evt) {
   elementsItem.remove();
 });
 
-elementsItem.querySelector('.elements__image').addEventListener('click', function (evt) {
+  elementImage.addEventListener('click', function (evt) {
   openPopup(imagePopup);
 
   imageLink.src = link;
@@ -107,8 +111,8 @@ initialCards.forEach(function (element) {
 
 /*Profile submit*/
 
-function formProfileSubmit (submit) {
-  submit.preventDefault();
+function handleProfileFormSubmit (evt) {
+  evt.preventDefault();
 
   profileName.textContent = nameInput.value;
   profileJob.textContent = jobInput.value;
@@ -119,13 +123,12 @@ function formProfileSubmit (submit) {
 
 /*Elements submit*/
 
-function formElementsSubmit (submit) {
-  submit.preventDefault();
+function handleElementsFormSubmit (evt) {
+  evt.preventDefault();
 
   elementsContainer.prepend(addElement(placeInput.value, linkInput.value));
 
-  placeInput.value = '';
-  linkInput.value = '';
+  evt.target.reset();
 
   closePopup(elementsPopup);
 }
@@ -141,8 +144,6 @@ editButton.addEventListener('click', function (evt) {
 
 profileCloseButton.addEventListener('click', function (evt) {
   closePopup(profilePopup);
-  nameInput.value = '';
-  jobInput.value = '';
 });
 
 addButton.addEventListener('click', function (evt) {
@@ -151,13 +152,11 @@ addButton.addEventListener('click', function (evt) {
 
 elementsCloseButton.addEventListener('click', function (evt) {
   closePopup(elementsPopup);
-  placeInput.value = '';
-  linkInput.value = '';
 });
 
 imageCloseButton.addEventListener('click', function (evt) {
   closePopup(imagePopup);
 });
 
-formProfile.addEventListener('submit', formProfileSubmit);
-formElements.addEventListener('submit', formElementsSubmit);
+profileForm.addEventListener('submit', handleProfileFormSubmit);
+elementForm.addEventListener('submit', handleElementsFormSubmit);

@@ -1,4 +1,4 @@
-.elements__close-btn {
+.elements__delete-btn {
   position: absolute;
   top: 20px;
   right: 20px;
@@ -10,6 +10,6 @@
   align-self: center;
 }
 
-.elements__close-btn:hover {
+.elements__delete-btn:hover {
   opacity: 0.6;
 }
