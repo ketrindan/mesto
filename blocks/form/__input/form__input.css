@@ -1,4 +1,4 @@
-.input__text {
+.form__input {
   box-sizing: border-box;
   font-family: 'Inter', Arial, Helvetica, sans-serif;
   font-style: normal;
@@ -8,15 +8,14 @@
   color: #000000;
   border-style: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  padding-top: 30px;
-  padding-bottom: 13px;
+  padding: 13px 0;
 }
 
-.input__text::placeholder {
+.form__input::placeholder {
   font-family: 'Inter', Arial, Helvetica, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
-  color: #000000;
+  color: #C4C4C4;
 }

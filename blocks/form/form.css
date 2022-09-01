@@ -1,4 +1,4 @@
-.input {
+.form {
   width: 358px;
   margin: 42px auto 37px auto;
   display: flex;
@@ -6,14 +6,14 @@
 }
 
 @media screen and (max-width: 768px) {
-  .input {
+  .form {
     width: 80%;
     margin: 38px auto 30px auto;
   }
 }
 
 @media screen and (max-width: 425px) {
-  .input {
+  .form {
     width: 238px;
     margin: 41px auto 25px auto;
   }
