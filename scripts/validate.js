@@ -8,6 +8,8 @@ const validationConfig = {
 }
 
 
+/* Скрыть/показать ошибки */
+
 function showInputError (formElement, inputElement, config) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.add(config.inputErrorClass);
@@ -23,6 +25,8 @@ function hideInputError (formElement, inputElement, config) {
   errorElement.textContent = '';
 }
 
+
+/* Проверка полей */
 
 function checkInputValidity (formElement, inputElement, config) {
   if (!inputElement.validity.valid) {
@@ -40,7 +44,30 @@ function hasInvalidInput (inputList) {
 }
 
 
+/* Кнопки */
+
+function disableSubmitButton (buttonElement, config) {
+  buttonElement.classList.add(config.inactiveButtonClass);
+  buttonElement.setAttribute("disabled", "true");
+}
+
+
+function enableSubmitButton (buttonElement, config) {
+  buttonElement.classList.remove(config.inactiveButtonClass);
+  buttonElement.removeAttribute("disabled");
+}
+
+
 function toggleButtonState (inputList, buttonElement, config) {
+  if (hasInvalidInput(inputList)) {
+    disableSubmitButton (buttonElement, config)
+  } else {
+    enableSubmitButton (buttonElement, config)
+  }
+}
+
+
+/*function toggleButtonState (inputList, buttonElement, config) {
   if (hasInvalidInput(inputList)) {
     buttonElement.classList.add(config.inactiveButtonClass);
     buttonElement.setAttribute("disabled", "true");
@@ -48,8 +75,11 @@ function toggleButtonState (inputList, buttonElement, config) {
     buttonElement.classList.remove(config.inactiveButtonClass);
     buttonElement.removeAttribute("disabled");
   }
-}
+}*/
 
+
+
+/* Валидация */
 
 function setEventListeners (formElement, config) {
   const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
