@@ -15,8 +15,6 @@ const profileJob = document.querySelector('.profile__subtitle');
 
 const placeInput = document.querySelector('.form__input_type_place');
 const linkInput = document.querySelector('.form__input_type_link');
-const elementsPlace = document.querySelector('.elements__title');
-const elementsLink = document.querySelector('.elements__image');
 
 const profileForm = document.querySelector('.form-profile');
 const elementForm = document.querySelector('.form-elements');
@@ -25,6 +23,10 @@ const imagePopup = document.querySelector('.image-popup');
 const imageLink = imagePopup.querySelector('.popup__image');
 const imageSubtitle = imagePopup.querySelector('.popup__image-subtitle');
 const imageCloseButton = imagePopup.querySelector('.image-popup__close-btn');
+
+
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
 
 
 /* Первоначальные карточки*/
@@ -57,63 +59,50 @@ const initialCards = [
 ];
 
 
-/*Открытие-закрытие попапов*/
+/* Открытие-закрытие попапов */
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-  document.addEventListener('keydown', escHandler)
-  popup.addEventListener('click', overlayClickHandler)
+  document.addEventListener('keydown', escHandler);
+  popup.addEventListener('mousedown', overlayClickHandler);
 }
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
   document.removeEventListener('keydown', escHandler)
-  popup.removeEventListener('click', overlayClickHandler)
+  popup.removeEventListener('mousedown', overlayClickHandler)
 }
 
 
-/*Добавление карточки*/
+/* Попап картинки */
 
-function addElement(name, link) {
-  const elementsTemplate = document.querySelector('#elements-template').content;
-  const elementsItem = elementsTemplate.querySelector('.elements__item').cloneNode(true);
-  const elementTitle = elementsItem.querySelector('.elements__title');
-  const elementImage = elementsItem.querySelector('.elements__image');
-  const elementLike = elementsItem.querySelector('.elements__like');
-  const elementDeleteButton = elementsItem.querySelector('.elements__delete-btn');
-
-  elementTitle.textContent = name;
-  elementImage.src = link;
-  elementImage.alt = `картинка ${name}`;
-
-  elementLike.addEventListener('click', function (evt) {
-    evt.target.classList.toggle('elements__like_active');
-});
-
-  elementDeleteButton.addEventListener('click', function (evt) {
-  elementsItem.remove();
-});
-
-  elementImage.addEventListener('click', function (evt) {
+function openImagePopup(name, link) {
   openPopup(imagePopup);
 
   imageLink.src = link;
   imageSubtitle.textContent = name;
   imageLink.alt = `картинка ${name}`;
-});
-
-  return elementsItem;
 }
 
 
-/*Первоначальные карточки*/
+/* Добавление карточки */
 
-initialCards.forEach(function (element) {
-  elementsContainer.append(addElement(element.name, element.link));
+function addElement(name, link) {
+  const card = new Card({name, link}, '#elements-template', openImagePopup);
+	const cardElement = card.addElement();
+
+  return cardElement;
+}
+
+
+/* Первоначальные карточки */
+
+initialCards.forEach((item) => {
+	elementsContainer.append(addElement(item.name, item.link));
 });
 
 
-/*Profile submit*/
+/* Profile submit */
 
 function handleProfileFormSubmit (evt) {
   evt.preventDefault();
@@ -125,7 +114,7 @@ function handleProfileFormSubmit (evt) {
 }
 
 
-/*Elements submit*/
+/* Elements submit */
 
 function handleElementsFormSubmit (evt) {
   evt.preventDefault();
@@ -138,7 +127,7 @@ function handleElementsFormSubmit (evt) {
 }
 
 
-/*Закрытие Esc*/
+/* Закрытие Esc */
 
 function escHandler(evt) {
   if (evt.key === "Escape") {
@@ -148,7 +137,7 @@ function escHandler(evt) {
 }
 
 
-/*Закрытие кликом на оверлей*/
+/* Закрытие кликом на оверлей */
 
 function overlayClickHandler(evt) {
   if (evt.target === evt.currentTarget) {
@@ -164,7 +153,7 @@ editButton.addEventListener('click', function (evt) {
   openPopup(profilePopup);
   nameInput.value =  profileName.textContent;
   jobInput.value = profileJob.textContent;
-  setInitialFormState(profileForm, validationConfig);
+  editFormValidator.setInitialFormState();
 });
 
 profileCloseButton.addEventListener('click', function (evt) {
@@ -173,7 +162,7 @@ profileCloseButton.addEventListener('click', function (evt) {
 
 addButton.addEventListener('click', function (evt) {
   openPopup(elementsPopup);
-  setInitialFormState(elementForm, validationConfig);
+  addFormValidator.setInitialFormState();
 });
 
 elementsCloseButton.addEventListener('click', function (evt) {
@@ -186,3 +175,21 @@ imageCloseButton.addEventListener('click', function (evt) {
 
 profileForm.addEventListener('submit', handleProfileFormSubmit);
 elementForm.addEventListener('submit', handleElementsFormSubmit);
+
+
+/* Валидация */
+
+const validationConfig = {
+  formSelector: '.form',
+  inputSelector: '.form__input',
+  submitButtonSelector: '.form__submit-btn',
+  inactiveButtonClass: 'form__submit-btn_inactive',
+  inputErrorClass: 'form__input_type_error',
+  errorClass: 'form__input-error_active',
+}
+
+const editFormValidator = new FormValidator(profileForm, validationConfig);
+const addFormValidator = new FormValidator(elementForm, validationConfig);
+
+editFormValidator.enableValidation();
+addFormValidator.enableValidation();
