@@ -153,7 +153,6 @@ editButton.addEventListener('click', function (evt) {
   nameInput.value =  profileName.textContent;
   jobInput.value = profileJob.textContent;
 
-  /*editFormValidator.setInitialFormState();*/
   formValidators['profile-form'].setInitialFormState()
 });
 
@@ -166,23 +165,8 @@ profileCloseButton.addEventListener('click', function (evt) {
 addButton.addEventListener('click', function (evt) {
   openPopup(elementsPopup);
 
-  /*addFormValidator.setInitialFormState();*/
   formValidators['elements-form'].setInitialFormState()
 });
-
-
-/*elementsCloseButton.addEventListener('mousedown', function (evt) {
-  closePopup(elementsPopup);
-});
-
-
-imageCloseButton.addEventListener('mousedown', function (evt) {
-  closePopup(imagePopup);
-});
-
-
-profileForm.addEventListener('submit', handleProfileFormSubmit);
-elementForm.addEventListener('submit', handleElementsFormSubmit);*/
 
 
 const closeButtons = document.querySelectorAll('.popup__close-btn');
@@ -195,6 +179,10 @@ closeButtons.forEach((button) => {
 });
 
 
+profileForm.addEventListener('submit', handleProfileFormSubmit);
+elementForm.addEventListener('submit', handleElementsFormSubmit);
+
+
 /* Валидация */
 
 const validationConfig = {
@@ -205,13 +193,6 @@ const validationConfig = {
   inputErrorClass: 'form__input_type_error',
   errorClass: 'form__input-error_active',
 }
-
-
-/*const editFormValidator = new FormValidator(profileForm, validationConfig);
-const addFormValidator = new FormValidator(elementForm, validationConfig);
-
-editFormValidator.enableValidation();
-addFormValidator.enableValidation();*/
 
 
 const formValidators = {}
