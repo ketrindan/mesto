@@ -158,7 +158,7 @@ editButton.addEventListener('click', function (evt) {
 });
 
 
-profileCloseButton.addEventListener('mousedown', function (evt) {
+profileCloseButton.addEventListener('click', function (evt) {
   closePopup(profilePopup)
 });
 
@@ -171,7 +171,7 @@ addButton.addEventListener('click', function (evt) {
 });
 
 
-elementsCloseButton.addEventListener('mousedown', function (evt) {
+/*elementsCloseButton.addEventListener('mousedown', function (evt) {
   closePopup(elementsPopup);
 });
 
@@ -182,7 +182,17 @@ imageCloseButton.addEventListener('mousedown', function (evt) {
 
 
 profileForm.addEventListener('submit', handleProfileFormSubmit);
-elementForm.addEventListener('submit', handleElementsFormSubmit);
+elementForm.addEventListener('submit', handleElementsFormSubmit);*/
+
+
+const closeButtons = document.querySelectorAll('.popup__close-btn');
+
+closeButtons.forEach((button) => {
+
+  const popup = button.closest('.popup');
+
+  button.addEventListener('click', () => closePopup(popup));
+});
 
 
 /* Валидация */
