@@ -1,3 +1,7 @@
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
+
+
 const elementsContainer = document.querySelector('.elements__container');
 
 const profilePopup = document.querySelector('.profile-popup');
@@ -23,10 +27,6 @@ const imagePopup = document.querySelector('.image-popup');
 const imageLink = imagePopup.querySelector('.popup__image');
 const imageSubtitle = imagePopup.querySelector('.popup__image-subtitle');
 const imageCloseButton = imagePopup.querySelector('.image-popup__close-btn');
-
-
-import Card from './Card.js';
-import FormValidator from './FormValidator.js';
 
 
 /* Первоначальные карточки*/
@@ -63,14 +63,14 @@ const initialCards = [
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-  document.addEventListener('keydown', escHandler);
-  popup.addEventListener('mousedown', overlayClickHandler);
+  document.addEventListener('keydown', handleEscape);
+  popup.addEventListener('mousedown', handleOverlay);
 }
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
-  document.removeEventListener('keydown', escHandler)
-  popup.removeEventListener('mousedown', overlayClickHandler)
+  document.removeEventListener('keydown', handleEscape)
+  popup.removeEventListener('mousedown', handleOverlay)
 }
 
 
@@ -87,9 +87,9 @@ function openImagePopup(name, link) {
 
 /* Добавление карточки */
 
-function addElement(name, link) {
+function createCard(name, link) {
   const card = new Card({name, link}, '#elements-template', openImagePopup);
-	const cardElement = card.addElement();
+	const cardElement = card.createCard();
 
   return cardElement;
 }
@@ -98,7 +98,7 @@ function addElement(name, link) {
 /* Первоначальные карточки */
 
 initialCards.forEach((item) => {
-	elementsContainer.append(addElement(item.name, item.link));
+	elementsContainer.append(createCard(item.name, item.link));
 });
 
 
@@ -119,7 +119,7 @@ function handleProfileFormSubmit (evt) {
 function handleElementsFormSubmit (evt) {
   evt.preventDefault();
 
-  elementsContainer.prepend(addElement(placeInput.value, linkInput.value));
+  elementsContainer.prepend(createCard(placeInput.value, linkInput.value));
 
   evt.target.reset();
 
@@ -129,7 +129,7 @@ function handleElementsFormSubmit (evt) {
 
 /* Закрытие Esc */
 
-function escHandler(evt) {
+function handleEscape(evt) {
   if (evt.key === "Escape") {
     const popupOpened = document.querySelector(".popup_opened");
     closePopup(popupOpened);
@@ -139,10 +139,9 @@ function escHandler(evt) {
 
 /* Закрытие кликом на оверлей */
 
-function overlayClickHandler(evt) {
+function handleOverlay(evt) {
   if (evt.target === evt.currentTarget) {
-    const popupOpened = document.querySelector(".popup_opened");
-    closePopup(popupOpened)
+    closePopup(evt.currentTarget)
   }
 }
 
@@ -153,25 +152,34 @@ editButton.addEventListener('click', function (evt) {
   openPopup(profilePopup);
   nameInput.value =  profileName.textContent;
   jobInput.value = profileJob.textContent;
-  editFormValidator.setInitialFormState();
+
+  /*editFormValidator.setInitialFormState();*/
+  formValidators['profile-form'].setInitialFormState()
 });
 
-profileCloseButton.addEventListener('click', function (evt) {
+
+profileCloseButton.addEventListener('mousedown', function (evt) {
   closePopup(profilePopup)
 });
 
+
 addButton.addEventListener('click', function (evt) {
   openPopup(elementsPopup);
-  addFormValidator.setInitialFormState();
+
+  /*addFormValidator.setInitialFormState();*/
+  formValidators['elements-form'].setInitialFormState()
 });
 
-elementsCloseButton.addEventListener('click', function (evt) {
+
+elementsCloseButton.addEventListener('mousedown', function (evt) {
   closePopup(elementsPopup);
 });
 
-imageCloseButton.addEventListener('click', function (evt) {
+
+imageCloseButton.addEventListener('mousedown', function (evt) {
   closePopup(imagePopup);
 });
+
 
 profileForm.addEventListener('submit', handleProfileFormSubmit);
 elementForm.addEventListener('submit', handleElementsFormSubmit);
@@ -188,8 +196,26 @@ const validationConfig = {
   errorClass: 'form__input-error_active',
 }
 
-const editFormValidator = new FormValidator(profileForm, validationConfig);
+
+/*const editFormValidator = new FormValidator(profileForm, validationConfig);
 const addFormValidator = new FormValidator(elementForm, validationConfig);
 
 editFormValidator.enableValidation();
-addFormValidator.enableValidation();
+addFormValidator.enableValidation();*/
+
+
+const formValidators = {}
+
+const enableValidation = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector))
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(formElement, config)
+
+    const formName = formElement.getAttribute('name')
+
+    formValidators[formName] = validator;
+   validator.enableValidation();
+  });
+};
+
+enableValidation(validationConfig);

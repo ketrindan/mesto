@@ -6,6 +6,7 @@ export default class Card {
     this._openImagePopup = openImagePopup;
   }
 
+
   _getElement() {
     const cardElement = document
       .querySelector(this._selector)
@@ -17,29 +18,52 @@ export default class Card {
 	}
 
 
-  addElement() {
+  _toggleLike() {
+    this._likeButton.classList.toggle('elements__like_active');
+  }
+
+
+  _deleteCard() {
+    this._element.remove();
+  }
+
+
+  _handleImageClick() {
+    this._openImagePopup(this._name, this._link);
+  }
+
+
+  _setEventListeners() {
+    this._likeButton.addEventListener('click', () => {
+      this._toggleLike();
+    });
+
+    this._deleteButton .addEventListener('click', () => {
+      this._deleteCard();
+    });
+
+    this._cardImage.addEventListener('click', () => {
+      this._handleImageClick();
+    });
+ }
+
+
+  createCard() {
     this._element = this._getElement();
-  	this._element.querySelector('.elements__title').textContent = this._name;
-  	this._element.querySelector('.elements__image').src = this._link;
-    this._element.querySelector('.elements__image').alt = `картинка ${this._name}`;;
+
+    this._likeButton = this._element.querySelector('.elements__like');
+    this._deleteButton = this._element.querySelector('.elements__delete-btn');
+    this._cardImage = this._element.querySelector('.elements__image');
+
+    this._cardImage = this._element.querySelector('.elements__image');
+    this._cardTitle = this._element.querySelector('.elements__title');
+
+  	this._cardTitle.textContent = this._name;
+  	this._cardImage.src = this._link;
+    this._cardImage.alt = `картинка ${this._name}`;;
 
     this._setEventListeners();
 
   	return this._element;
   }
-
-
-  _setEventListeners() {
-    this._element.querySelector('.elements__like').addEventListener('click', (evt) => {
-      evt.target.classList.toggle('elements__like_active');
-    });
-
-    this._element.querySelector('.elements__delete-btn').addEventListener('click', () => {
-      this._element.remove();
-    });
-
-    this._element.querySelector('.elements__image').addEventListener('click', () => {
-      this._openImagePopup(this._name, this._link)
-    });
- }
 }
