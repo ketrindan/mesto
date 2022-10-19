@@ -1,16 +1,16 @@
-import './pages/index.css';
+import './index.css';
 
-import Card from './components/Card.js';
-import FormValidator from './components/FormValidator.js';
-import Section from './components/Section.js';
-import PopupWithForm from './components/PopupWithForm.js';
-import PopupWithImage from './components/PopupWithImage.js';
-import UserInfo from './components/UserInfo.js';
+import Card from '../components/Card.js';
+import FormValidator from '../components/FormValidator.js';
+import Section from '../components/Section.js';
+import PopupWithForm from '../components/PopupWithForm.js';
+import PopupWithImage from '../components/PopupWithImage.js';
+import UserInfo from '../components/UserInfo.js';
 
 
-import cherkessImage from './images/image-karachaevo.png';
-import dombayImage from './images/image-dombay.png';
-import krasnodarImage from './images/image-krasnodar.jpg';
+import cherkessImage from '../images/image-karachaevo.png';
+import dombayImage from '../images/image-dombay.png';
+import krasnodarImage from '../images/image-krasnodar.jpg';
 
 
 const editButton = document.querySelector('.button_action_edit');
@@ -123,7 +123,7 @@ const validationConfig = {
 
 const formValidators = {}
 
-const enableValidation = (config) => {
+const handleValidation = (config) => {
   const formList = Array.from(document.querySelectorAll(config.formSelector))
   formList.forEach((formElement) => {
     const validator = new FormValidator(formElement, config)
@@ -135,4 +135,4 @@ const enableValidation = (config) => {
   });
 };
 
-enableValidation(validationConfig);
+handleValidation(validationConfig);
