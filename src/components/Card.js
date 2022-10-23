@@ -90,6 +90,12 @@ export default class Card {
       this._deleteButton.remove();
     }
 
+    if (this._likes.some((user) => {
+      return user._id === this._userId
+      })) {
+      this._likeButton.classList.add('elements__like_active');
+    }
+
     this._setEventListeners();
 
   	return this._element;

@@ -30,16 +30,6 @@ const api = new Api(apiConfig);
 
 const userInfo = new UserInfo('.profile__title', '.profile__subtitle', '.profile__avatar');
 
-api.getUserData()
-.then((data) => {
-    userInfo.setUserInfo(data.name, data.about);
-    userInfo.setAvatar(data.avatar);
-    userInfo.getId(data);
-})
-.catch((err) => {
-  console.log(err)
-})
-
 
 /* Попап редактирования инфы о пользователе */
 
@@ -48,6 +38,7 @@ const profilePopup = new PopupWithForm('.profile-popup', (inputValueList) => {
   api.setUserData(inputValueList.name, inputValueList.job)
   .then((data) => {
     userInfo.setUserInfo(data.name, data.about);
+    profilePopup.close();
   })
   .catch((err) => {
     console.log(err);
@@ -65,6 +56,7 @@ const avatarPopup = new PopupWithForm('.avatar-popup', (inputValueList) => {
   api.changeAvatar(inputValueList.avatar)
   .then((data) => {
     userInfo.setAvatar(data.avatar);
+    avatarPopup.close();
   })
   .catch((err) => {
     console.log(err);
@@ -85,6 +77,7 @@ function createCard(data) {
         api.deleteCard(card._cardId)
         .then(() => {
           card.deleteCard();
+          deletePopup.close();
         })
         .catch((err) => {
           console.log(err);
@@ -117,15 +110,7 @@ function createCard(data) {
 }
 
 
-const сardsList = new Section(createCard, '.elements__container');
-
-api.getCards()
-.then((res) => {
-  сardsList.renderItems(res);
-})
-.catch((err) => {
-  console.log(err);
-});
+const cardsList = new Section((card) => cardsList.addItem(createCard(card)), '.elements__container');
 
 
 /* Попап добавления карточки */
@@ -134,7 +119,8 @@ const elementsPopup = new PopupWithForm('.elements-popup', (inputValueList) => {
   elementsPopup.renderLoading(true);
   api.addNewCard(inputValueList.place, inputValueList.link)
   .then((data) => {
-    сardsList.addItem(createCard(data));
+    cardsList.addItem(createCard(data));
+    elementsPopup.close();
   })
   .catch((err) => {
     console.log(err);
@@ -159,6 +145,20 @@ imagePopup.setEventListeners();
 avatarPopup.setEventListeners();
 
 deletePopup.setEventListeners();
+
+
+/* Первоначальная отрисовка */
+
+Promise.all([api.getUserData(), api.getCards()])
+.then(([userData, cardsdata])=> {
+  userInfo.setUserInfo(userData.name, userData.about);
+  userInfo.setAvatar(userData.avatar);
+  userInfo.getId(userData);
+  cardsList.renderItems(cardsdata);
+})
+.catch((err) => {
+   console.log(err);
+})
 
 
 /* Обработчики кнопок*/

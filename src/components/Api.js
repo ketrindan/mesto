@@ -5,29 +5,23 @@ export default class Api {
   }
 
 
+  _serverResponse(res) {
+    if (res.ok) {
+      return res.json();
+    }
+
+    return Promise.reject(new Error(`Ошибка: ${res.status}`))
+  }
+
   getUserData() {
     return fetch(`${this._baseUrl}/users/me`, {headers: this._headers})
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(new Error(res.status))
-    })
-    .catch((err) => Promise.reject(err))
+    .then(res => this._serverResponse(res))
   }
 
 
   getCards() {
     return fetch(`${this._baseUrl}/cards`, {headers: this._headers})
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(new Error(res.status))
-    })
-    .catch((err) => Promise.reject(err))
+    .then(res => this._serverResponse(res))
   }
 
 
@@ -37,14 +31,7 @@ export default class Api {
       headers: this._headers,
       body: JSON.stringify({name: name, about: job})
     })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(new Error(res.status))
-    })
-    .catch((err) => Promise.reject(err))
+    .then(res => this._serverResponse(res))
   }
 
 
@@ -54,14 +41,7 @@ export default class Api {
       headers: this._headers,
       body: JSON.stringify({name: place, link: link})
     })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(new Error(res.status))
-    })
-    .catch((err) => Promise.reject(err))
+    .then(res => this._serverResponse(res))
   }
 
 
@@ -70,14 +50,7 @@ export default class Api {
       {method: 'DELETE',
       headers: this._headers,
     })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(new Error(res.status))
-    })
-    .catch((err) => Promise.reject(err))
+    .then(res => this._serverResponse(res))
   }
 
 
@@ -86,14 +59,7 @@ export default class Api {
       {method: 'PUT',
       headers: this._headers,
     })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(new Error(res.status))
-    })
-    .catch((err) => Promise.reject(err))
+    .then(res => this._serverResponse(res))
   }
 
 
@@ -102,14 +68,7 @@ export default class Api {
       {method: 'DELETE',
       headers: this._headers,
     })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(new Error(res.status))
-    })
-    .catch((err) => Promise.reject(err))
+    .then(res => this._serverResponse(res))
   }
 
 
@@ -119,14 +78,7 @@ export default class Api {
     headers: this._headers,
     body: JSON.stringify({avatar: avatar})
     })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(new Error(res.status))
-    })
-    .catch((err) => Promise.reject(err))
+    .then(res => this._serverResponse(res))
   }
 }
 
