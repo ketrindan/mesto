@@ -6,61 +6,149 @@ import Section from '../components/Section.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import UserInfo from '../components/UserInfo.js';
-
-
-import cherkessImage from '../images/image-karachaevo.png';
-import dombayImage from '../images/image-dombay.png';
-import krasnodarImage from '../images/image-krasnodar.jpg';
+import PopupWithConfirmation from '../components/PopupWithConfirmation.js';
+import Api from '../components/Api.js';
 
 
 const editButton = document.querySelector('.button_action_edit');
 const addButton = document.querySelector('.button_action_add');
+const changeAvatarButton = document.querySelector('.profile__edit-avatar');
 
 
-/* Первоначальные карточки*/
-
-const initialCards = [
-  {
-    name: 'Карачаево-Черкессия',
-    link: cherkessImage
-  },
-  {
-    name: 'Гора Эльбрус',
-    link: 'https://images.unsplash.com/photo-1617391875568-0871c58f1751?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fCVEMSU4RCVEMCVCQiVEMSU4QyVEMCVCMSVEMSU4MCVEMSU4MyVEMSU4MXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60'
-  },
-  {
-    name: 'Домбай',
-    link: dombayImage
-  },
-  {
-    name: 'Байкал',
-    link: 'https://images.unsplash.com/photo-1602256976419-c82585fe73a7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YmFpa2FsfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60'
-  },
-  {
-    name: 'Краснодар',
-    link: krasnodarImage
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://images.unsplash.com/photo-1556069749-287002c33fa6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjh8fGthbWNoYXRrYXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60'
+const apiConfig = {
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-52',
+  headers: {
+    authorization: '00a673b9-8570-48a8-8e0e-9115399f6375',
+    'Content-Type': 'application/json'
   }
-];
+};
+
+const api = new Api(apiConfig);
 
 
+/* Информация о пользователе */
 
-/* Все для попапов */
+const userInfo = new UserInfo('.profile__title', '.profile__subtitle', '.profile__avatar');
 
-const userInfo = new UserInfo('.profile__title', '.profile__subtitle');
+api.getUserData()
+.then((data) => {
+    userInfo.setUserInfo(data.name, data.about);
+    userInfo.setAvatar(data.avatar);
+    userInfo.getId(data);
+})
+.catch((err) => {
+  console.log(err)
+})
 
-const profilePopup = new PopupWithForm('.profile-popup', (inputValueList) =>
-  userInfo.setUserInfo(inputValueList.name, inputValueList.job)
-);
 
-const elementsPopup = new PopupWithForm('.elements-popup', (inputValueList) => {
-  сardsList.addItem(createCard(inputValueList.place, inputValueList.link))
+/* Попап редактирования инфы о пользователе */
+
+const profilePopup = new PopupWithForm('.profile-popup', (inputValueList) => {
+  profilePopup.renderLoading(true);
+  api.setUserData(inputValueList.name, inputValueList.job)
+  .then((data) => {
+    userInfo.setUserInfo(data.name, data.about);
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+  .finally(() => {
+    profilePopup.renderLoading(false);
+  })
+})
+
+
+/* Попап аватара */
+
+const avatarPopup = new PopupWithForm('.avatar-popup', (inputValueList) => {
+  avatarPopup.renderLoading(true);
+  api.changeAvatar(inputValueList.avatar)
+  .then((data) => {
+    userInfo.setAvatar(data.avatar);
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+  .finally(() => {
+    avatarPopup.renderLoading(false);
+  })
+})
+
+
+/* Отрисовка карточек */
+
+function createCard(data) {
+  const card = new Card(data, '#elements-template', userInfo._id, imagePopup.open.bind(imagePopup),
+    () => {
+      deletePopup.open();
+      deletePopup.setSubmitCallback(() => {
+        api.deleteCard(card._cardId)
+        .then(() => {
+          card.deleteCard();
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+      })
+    },
+    () => {
+      api.putLike(card._cardId)
+      .then((res) => {
+        card.likeCard(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    },
+    () => {
+      api.deleteLike(card._cardId)
+      .then((res) => {
+        card.likeCard(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    }
+  )
+
+	const cardElement = card.createCard();
+
+  return cardElement
+}
+
+
+const сardsList = new Section(createCard, '.elements__container');
+
+api.getCards()
+.then((res) => {
+  сardsList.renderItems(res);
+})
+.catch((err) => {
+  console.log(err);
 });
 
+
+/* Попап добавления карточки */
+
+const elementsPopup = new PopupWithForm('.elements-popup', (inputValueList) => {
+  elementsPopup.renderLoading(true);
+  api.addNewCard(inputValueList.place, inputValueList.link)
+  .then((data) => {
+    сardsList.addItem(createCard(data));
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+  .finally(() => {
+    elementsPopup.renderLoading(false);
+  })
+})
+
+
 const imagePopup = new PopupWithImage('.image-popup');
+
+const deletePopup = new PopupWithConfirmation('.delete-popup')
+
 
 profilePopup.setEventListeners();
 
@@ -68,45 +156,33 @@ elementsPopup.setEventListeners();
 
 imagePopup.setEventListeners();
 
+avatarPopup.setEventListeners();
 
-
-/* Отрисовка карточек */
-
-function createCard(name, link) {
-  const card = new Card({name, link}, '#elements-template', imagePopup.open.bind(imagePopup));
-	const cardElement = card.createCard();
-
-  return cardElement
-}
-
-
-const сardsList = new Section({ items: initialCards, renderer: (item) => {const card = new Card(item, '#elements-template', imagePopup.open.bind(imagePopup));
-
-      const cardElement = card.createCard();
-
-      сardsList.addItem(cardElement);}},
-'.elements__container');
-
-сardsList.renderItems()
-
+deletePopup.setEventListeners();
 
 
 /* Обработчики кнопок*/
 
-editButton.addEventListener('click', function (evt) {
+editButton.addEventListener('click', function () {
   profilePopup.open();
   profilePopup.setInputValues(userInfo.getUserInfo());
 
-  formValidators['profile-form'].setInitialFormState()
+  formValidators['profile-form'].setInitialFormState();
 });
 
 
-addButton.addEventListener('click', function (evt) {
+addButton.addEventListener('click', function () {
   elementsPopup.open();
 
   formValidators['elements-form'].setInitialFormState();
 });
 
+
+changeAvatarButton.addEventListener('click', function () {
+  avatarPopup.open();
+
+  formValidators['avatar-form'].setInitialFormState();
+})
 
 
 /* Валидация */
@@ -126,12 +202,13 @@ const formValidators = {}
 const handleValidation = (config) => {
   const formList = Array.from(document.querySelectorAll(config.formSelector))
   formList.forEach((formElement) => {
-    const validator = new FormValidator(formElement, config)
+    const validator = new FormValidator(formElement, config);
 
-    const formName = formElement.getAttribute('name')
+    const formName = formElement.getAttribute('name');
 
     formValidators[formName] = validator;
-   validator.enableValidation();
+
+    validator.enableValidation();
   });
 };
 

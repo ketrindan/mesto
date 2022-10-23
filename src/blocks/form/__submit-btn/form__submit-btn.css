@@ -1,5 +1,6 @@
 .form__submit-btn {
   width: 100%;
+  max-width: 358px;
   height: 50px;
   color: #FFFFFF;
   background-color: #000000;
@@ -20,7 +21,7 @@
     height: 48px;
     font-size: 16px;
     line-height: 20px;
-    margin: 20px 0 0 0;
+    margin: 28px 0 0 0;
   }
 }
 
@@ -29,7 +30,7 @@
     height: 46px;
     font-size: 14px;
     line-height: 17px;
-    margin: 13px 0 0 0;
+    margin: 25px 0 0 0;
   }
 }
 

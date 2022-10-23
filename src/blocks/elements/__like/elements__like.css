@@ -4,7 +4,6 @@
   background-image: url(../../../images/like.svg);
   background-size: 100%;
   border-style: none;
-  align-self: center;
 }
 
 .elements__like:hover {
