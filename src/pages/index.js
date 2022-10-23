@@ -190,8 +190,8 @@ changeAvatarButton.addEventListener('click', function () {
 const validationConfig = {
   formSelector: '.form',
   inputSelector: '.form__input',
-  submitButtonSelector: '.form__submit-btn',
-  inactiveButtonClass: 'form__submit-btn_inactive',
+  submitButtonSelector: '.submit-btn',
+  inactiveButtonClass: 'submit-btn_inactive',
   inputErrorClass: 'form__input_type_error',
   errorClass: 'form__input-error_active',
 }
