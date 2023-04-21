@@ -10,7 +10,7 @@
 
 Это один из этапов работы над проектом Mesto:
 
-1. **Mesto** (*текущий репозиторий*)
+1. **Mesto** - *текущий репозиторий*
 2. [Mesto (проект на React)](https://github.com/ketrindan/mesto-react)
 3. [Mesto (проект на React с авторизацией и регистрацией)](https://github.com/ketrindan/react-mesto-auth)
 4. [Mesto (бэкенд)](https://github.com/ketrindan/express-mesto-gha)
