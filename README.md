@@ -40,5 +40,33 @@
 
 [Макет в Figma](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0-1)
 
+### **Инструкция по установке и сборке**
+1. Клонировать репозиторий
+```
+git clone git@github.com:ketrindan/mesto.git
+```
+2. Перейти в папку проекта
+```
+cd mesto
+```
+3. Установить пакеты
+```
+npm install
+```
+
+
+`npm dev` - запуск проекта в режиме разработки на локальном сервере
+
+Чтобы открыть проект в браузере, перейдите на [http://localhost:3000](http://localhost:3000).
+
+
+`npm run build` - запуск сборки проекта, проект будет собран в папку `build`
+
+`npm run deploy` - деплой проекта на Github Pages
+
+
+### **Статус проекта**
+✅ Работа завершена
+
 ### **Ссылка на проект**
 [Проект на GitHub Pages](https://ketrindan.github.io/mesto/)
